@@ -106,7 +106,7 @@ def wide(df_train, df_test, wide_cols, x_cols, target, model_type, method):
     x_cols      : columns to be "crossed"
     target      : the target feature
     model_type  : accepts "wide" and "wide_deep" (or anything that is not
-    "wide"). If "wide_deep" the function will build and returs the inputs
+    "wide"). If "wide_deep" the function will build and return the inputs
     but NOT run any model.
     method      : the fitting method. accepts regression, logistic and multiclass
 
@@ -158,6 +158,11 @@ def wide(df_train, df_test, wide_cols, x_cols, target, model_type, method):
         y_train = onehot(y_train)
         y_test = onehot(y_test)
 
+    # Scaling
+    scaler = MinMaxScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test  = scaler.fit_transform(X_test)
+
     if model_type == 'wide':
 
         activation, loss, metrics = fit_param[method]
@@ -191,7 +196,7 @@ def deep(df_train, df_test, embedding_cols, cont_cols, target, model_type, metho
     cont_cols     : numerical columns to be combined with the embeddings
     target        : the target feature
     model_type    : accepts "deep" and "wide_deep" (or anything that is not
-    "wide"). If "wide_deep" the function will build and returs the inputs
+    "wide"). If "wide_deep" the function will build and returns the inputs
     but NOT run any model
     method        : the fitting method. accepts regression, logistic and multiclass
 
@@ -215,8 +220,8 @@ def deep(df_train, df_test, embedding_cols, cont_cols, target, model_type, metho
 
     # I 'd say that adding numerical columns to embeddings can be done in two ways:
     # 1_. normalise the values in the dataframe and pass them to the network
-    # 2_. add BatchNormalization() layer.
-    # I would say option 1 is the adequate/correct one. 2 performs better
+    # 2_. add BatchNormalization() layer. (which might be wrong?)
+    # I'd say option 1 is the correct one. 2 performs better, which does not say much, but...
 
     # 1_. Scaling in the dataframe
     # scaler = MinMaxScaler()
@@ -369,7 +374,21 @@ if __name__ == '__main__':
     df_test['age_group'] = pd.cut(
         df_test['age'], age_groups, labels=age_labels)
 
-    # columns for wide model
+    # # columns for wide model
+    # wide_cols = ['age','hours_per_week','education', 'relationship', 'workclass',
+    #              'occupation','native_country','gender']
+    # x_cols = (['education', 'occupation'], ['native_country', 'occupation'])
+
+    # # columns for deep model
+    # embedding_cols = ['education', 'relationship', 'workclass', 'occupation',
+    #                   'native_country']
+    # cont_cols = ["age","hours_per_week"]
+
+    # # target for logistic
+    # target = 'income_label'
+
+    # A set-up for multiclass classification would be:
+    # change method to multiclass
     wide_cols = ["gender", "native_country", "education", "occupation", "workclass",
                  "relationship"]
     x_cols = (['education', 'occupation'], ['native_country', 'occupation'])
@@ -377,24 +396,10 @@ if __name__ == '__main__':
     # columns for deep model
     embedding_cols = ['education', 'relationship', 'workclass', 'occupation',
                       'native_country']
-    cont_cols = ["age","hours_per_week"]
+    cont_cols = ["hours_per_week"]
 
-    # target for logistic
-    target = 'income_label'
-
-    # # A set-up for multiclass classification would be:
-    # # change method to multiclass
-    # wide_cols = ["gender", "native_country", "education", "occupation", "workclass",
-    #              "relationship"]
-    # x_cols = (['education', 'occupation'], ['native_country', 'occupation'])
-
-    # # columns for deep model
-    # embedding_cols = ['education', 'relationship', 'workclass', 'occupation',
-    #                   'native_country']
-    # cont_cols = ["hours_per_week"]
-
-    # # target
-    # target = 'age_group'
+    # target
+    target = 'age_group'
 
     if model_type == 'wide':
         wide(df_train, df_test, wide_cols, x_cols, target, model_type, method)
