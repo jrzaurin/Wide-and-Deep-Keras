@@ -220,7 +220,7 @@ def deep(df_train, df_test, embedding_cols, cont_cols, target, model_type, metho
 
     # I 'd say that adding numerical columns to embeddings can be done in two ways:
     # 1_. normalise the values in the dataframe and pass them to the network
-    # 2_. add BatchNormalization() layer. (which might be wrong?)
+    # 2_. add BatchNormalization() layer. (I am not entirely sure this is right)
     # I'd say option 1 is the correct one. 2 performs better, which does not say much, but...
 
     # 1_. Scaling in the dataframe
