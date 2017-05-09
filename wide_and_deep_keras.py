@@ -311,6 +311,9 @@ def wide_deep(df_train, df_test, wide_cols, x_cols, embedding_cols, cont_cols, m
     X_te_wd = [X_test_wide] + X_test_deep
     Y_te_wd = y_test_deep  # wide or deep is the same here
 
+    activation, loss, metrics = fit_param[method]
+    if metrics: metrics = [metrics]
+
     # WIDE
     w = Input(shape=(X_train_wide.shape[1],), dtype='float32', name='wide')
 
@@ -322,9 +325,6 @@ def wide_deep(df_train, df_test, wide_cols, x_cols, embedding_cols, cont_cols, m
     d = Dense(50, activation='relu', name='deep')(d)
 
     # WIDE + DEEP
-    activation, loss, metrics = fit_param[method]
-    if metrics: metrics = [metrics]
-
     wd_inp = concatenate([w, d])
     wd_out = Dense(Y_tr_wd.shape[1], activation=activation, name='wide_deep')(wd_inp)
     wide_deep = Model(inputs=[w] + deep_inp_layer, outputs=wd_out)
