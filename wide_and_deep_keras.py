@@ -374,32 +374,32 @@ if __name__ == '__main__':
     df_test['age_group'] = pd.cut(
         df_test['age'], age_groups, labels=age_labels)
 
-    # # columns for wide model
-    # wide_cols = ['age','hours_per_week','education', 'relationship', 'workclass',
-    #              'occupation','native_country','gender']
-    # x_cols = (['education', 'occupation'], ['native_country', 'occupation'])
-
-    # # columns for deep model
-    # embedding_cols = ['education', 'relationship', 'workclass', 'occupation',
-    #                   'native_country']
-    # cont_cols = ["age","hours_per_week"]
-
-    # # target for logistic
-    # target = 'income_label'
-
-    # A set-up for multiclass classification would be:
-    # change method to multiclass
-    wide_cols = ["gender", "native_country", "education", "occupation", "workclass",
-                 "relationship"]
+    # columns for wide model
+    wide_cols = ['age','hours_per_week','education', 'relationship', 'workclass',
+                 'occupation','native_country','gender']
     x_cols = (['education', 'occupation'], ['native_country', 'occupation'])
 
     # columns for deep model
     embedding_cols = ['education', 'relationship', 'workclass', 'occupation',
                       'native_country']
-    cont_cols = ["hours_per_week"]
+    cont_cols = ["age","hours_per_week"]
 
-    # target
-    target = 'age_group'
+    # target for logistic
+    target = 'income_label'
+
+    # # A set-up for multiclass classification would be:
+    # # change method to multiclass
+    # wide_cols = ["gender", "native_country", "education", "occupation", "workclass",
+    #              "relationship"]
+    # x_cols = (['education', 'occupation'], ['native_country', 'occupation'])
+
+    # # columns for deep model
+    # embedding_cols = ['education', 'relationship', 'workclass', 'occupation',
+    #                   'native_country']
+    # cont_cols = ["hours_per_week"]
+
+    # # target
+    # target = 'age_group'
 
     if model_type == 'wide':
         wide(df_train, df_test, wide_cols, x_cols, target, model_type, method)
