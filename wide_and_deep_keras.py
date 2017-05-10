@@ -113,9 +113,7 @@ def wide(df_train, df_test, wide_cols, x_cols, target, model_type, method):
     Returns:
     --------
     if "wide":
-    wide   : the linear model
-    results: the results of the evaluation on the test set
-
+    print the results obtained on the test set in the terminal.
     if "wide_deep":
     X_train, y_train, X_test, y_test: the inputs required to build wide and deep
 
@@ -203,8 +201,7 @@ def deep(df_train, df_test, embedding_cols, cont_cols, target, model_type, metho
     Returns:
     --------
     if "deep":
-    deep   : the deep model
-    results: the results of the evaluation on the test set
+    print the results obtained on the test set in the terminal.
 
     if "wide_deep":
     X_train, y_train, X_test, y_test: the inputs required to build wide and deep
